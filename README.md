@@ -1,2 +1,2 @@
 # mnr_ministry_parser
-Parser of employee income information of russian Ministry of natural resources
+Parsing of information on the income of employees of the Ministry of Natural Resources of Russia
