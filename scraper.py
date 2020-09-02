@@ -3,14 +3,11 @@ from bs4 import BeautifulSoup
 import requests
 import re
 from urllib.parse import urljoin
-import utils
+import utils, settings
 
 def scrap_site():
-    url = ('http://www.mnr.gov.ru/open_ministry/anticorruption/'
-        +'svedeniya_o_dokhodakh_raskhodakh_ob_imushchestve_i'
-        +'_obyazatelstvakh_imushchestvennogo_kharaktera/')
 
-
+    url = settings.MAIN_URL
     page = requests.get(url)
 
     if page.status_code != 200:
@@ -30,10 +27,8 @@ def scrap_site():
             doc_caption.find('руководителями федеральных')!=-1:
             continue
 
-        match = re.search(r'20\d\d',doc_caption)
-        if match:
-            doc_year = match[0]
-        else:
+        doc_year = utils.year_from_filename(doc_caption)
+        if not doc_year:
             print(f'Не удалось выделить год из заголовка : "{doc_caption}"')
             continue
 
@@ -45,6 +40,7 @@ def scrap_site():
             #сообщить об ошибке
             print("Скачивание не удалось")
             continue
+
         doc_file = open(utils.get_doc_filename(doc_year),"wb")
         doc_file.write(web_file.content)
         doc_file.close()

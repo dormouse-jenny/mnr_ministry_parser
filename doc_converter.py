@@ -1,20 +1,30 @@
-import utils
+# -*- coding: utf-8 -*-
 import os
+import settings, utils
+
 
 def doc_to_docx_linux(file_name):
-    import subprocess
+    from subprocess import run, PIPE, STDOUT
+
+    try:
+        from subprocess import DEVNULL # py3k
+    except ImportError:
+        DEVNULL = open(os.devnull, 'wb')
 
     print(f'Конвертация в docx файла {file_name}')
     #soffice --headless --convert-to docx --outdir doc_doc doc_doc/mnr_2009.doc
 
-    subprocess.call([
+    run([
         'soffice',
         '--headless',
         '--convert-to',
         'docx',
         '--outdir',
-        utils.DOCX_DIR,
-        file_name])
+        settings.DOCX_DIR,
+        file_name],
+        stdin=PIPE,
+        stdout=DEVNULL,
+        stderr=STDOUT)
 
 def doc_to_docx_win(file_name):
     #Не проверялось

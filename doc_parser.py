@@ -1,13 +1,15 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
+import sys
 import zipfile
-from bs4 import BeautifulSoup
 import re
 import locale
-from decimal import Decimal
 import itertools
 import csv
-import utils
-import sys
+from bs4 import BeautifulSoup
+from decimal import Decimal
+
+import settings, utils
+
 
 class Item():
     def __init__(self,type,own_type = "Собственность"):
@@ -348,7 +350,7 @@ def docx_to_csv(file_name):
         return
 
     csv_file = open(utils.get_csv_filename(year_str),mode = 'w',newline='')
-    csv_writer = csv.writer(csv_file,delimiter= utils.CSV_DELIMETR)
+    csv_writer = csv.writer(csv_file,delimiter= settings.CSV_DELIMETR)
     csv_writer.writerow(Person.get_fields())
 
     #Структура разбираемой таблицы
